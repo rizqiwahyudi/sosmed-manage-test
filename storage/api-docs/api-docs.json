@@ -1,0 +1,472 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Post Management API",
+        "description": "A simple API to manage social media posting",
+        "contact": {
+            "email": "rizqiwahyudi57@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/posts": {
+            "get": {
+                "summary": "Get list of posts",
+                "operationId": "3fda362e2e082b5357ac416e7767e435",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PostResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new post",
+                "operationId": "dcb66200c3132996151884ac232cf439",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePostRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/posts/{id}": {
+            "get": {
+                "summary": "Get a specific post",
+                "operationId": "142b5adb0520cca80cedfe09d9298332",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a specific post",
+                "operationId": "650f4bed0846d9350903d8a17c7b503a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePostRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Post updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a specific post",
+                "operationId": "9d99f2e42af2f722a058a86245aa856f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PostStatus": {
+                "description": "Status of the post",
+                "type": "string",
+                "enum": [
+                    "todo",
+                    "in_progress",
+                    "approved",
+                    "published"
+                ]
+            },
+            "StorePostRequest": {
+                "title": "Store Post Request",
+                "description": "Validation request for storing a new post",
+                "required": [
+                    "title",
+                    "brand",
+                    "due_date",
+                    "platform",
+                    "status",
+                    "assigned_to"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Title of the post",
+                        "type": "string"
+                    },
+                    "brand": {
+                        "description": "Brand associated with the post",
+                        "type": "string"
+                    },
+                    "desc": {
+                        "description": "Description of the post",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "image": {
+                        "description": "Image URL of the post",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "due_date": {
+                        "description": "Due date of the post",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "platform": {
+                        "description": "Platform where the post will be published",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Payment amount for the post",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Status of the post",
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "approved",
+                            "published"
+                        ]
+                    },
+                    "assigned_to": {
+                        "description": "User assigned to the post",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePostRequest": {
+                "title": "Update Post Request",
+                "description": "Validation request for updating an existing post",
+                "required": [
+                    "title",
+                    "brand",
+                    "due_date",
+                    "platform",
+                    "status",
+                    "assigned_to"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Title of the post",
+                        "type": "string"
+                    },
+                    "brand": {
+                        "description": "Brand associated with the post",
+                        "type": "string"
+                    },
+                    "desc": {
+                        "description": "Description of the post",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "image": {
+                        "description": "Image URL of the post",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "due_date": {
+                        "description": "Due date of the post",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "platform": {
+                        "description": "Platform where the post will be published",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Payment amount for the post",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Status of the post",
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "approved",
+                            "published"
+                        ]
+                    },
+                    "assigned_to": {
+                        "description": "User assigned to the post",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PostResource": {
+                "title": "Post Resource",
+                "description": "Post resource for API responses",
+                "properties": {
+                    "title": {
+                        "description": "Title of the post",
+                        "type": "string"
+                    },
+                    "brand": {
+                        "description": "Brand associated with the post",
+                        "type": "string"
+                    },
+                    "desc": {
+                        "description": "Description of the post",
+                        "type": "string"
+                    },
+                    "image": {
+                        "description": "Image URL of the post",
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "description": "Due date of the post",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "platform": {
+                        "description": "Platform where the post will be published",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Payment for the post",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "status": {
+                        "description": "Status of the post",
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "approved",
+                            "published"
+                        ]
+                    },
+                    "assigned_to": {
+                        "description": "User Name to whom the post is assigned",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Post": {
+                "title": "Post",
+                "description": "Post model",
+                "required": [
+                    "title",
+                    "brand",
+                    "due_date",
+                    "platform",
+                    "status",
+                    "assigned_to"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Title of the post",
+                        "type": "string"
+                    },
+                    "brand": {
+                        "description": "Brand associated with the post",
+                        "type": "string"
+                    },
+                    "desc": {
+                        "description": "Description of the post",
+                        "type": "string"
+                    },
+                    "image": {
+                        "description": "Image URL of the post",
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "description": "Due date of the post",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "platform": {
+                        "description": "Platform where the post will be published",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "description": "Payment for the post",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "status": {
+                        "description": "Status of the post",
+                        "type": "string",
+                        "enum": [
+                            "todo",
+                            "in_progress",
+                            "approved",
+                            "published"
+                        ]
+                    },
+                    "assigned_to": {
+                        "description": "User Name to whom the post is assigned",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
