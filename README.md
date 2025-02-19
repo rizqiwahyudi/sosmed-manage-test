@@ -59,6 +59,8 @@ php artisan migrate --seed
 php artisan serve
 ```
 
+> **To Access API Docs use this path : /api/documentation (E.g. http://127.0.0.1:8000/api/documentation)**
+
 # License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
